@@ -1,13 +1,17 @@
 import React, { useContext } from 'react';
 import AppContext from '../todoAppContext';
+import TYPE from '../helper/actionType';
 
 export default function TodoItem({ item }) {
-
-  const { items, setItems } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const btnDel_Clicked = function () {
-    const newItems = items.map(task => task.id === item.id ? { ...task, complete: true } : task);
-    setItems(newItems);
+    dispatch({
+      type: TYPE.COMPLETE_TASK,
+      payload: {
+        itemId: item.id,
+      },
+    });
   };
 
   return (

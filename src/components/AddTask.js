@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../todoAppContext';
+import TYPE from '../helper/actionType';
 
 export default function AddTask({ initValue }) {
   const [itemTitle, setItemTitle] = useState(initValue);
 
-  const { items, setItems } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const btnAdd_Clicked = function () {
     const newItem = {
@@ -13,7 +14,10 @@ export default function AddTask({ initValue }) {
       complete: false,
     };
 
-    setItems([...items, newItem]);
+    dispatch({
+      type: TYPE.ADD_ITEM,
+      payload: newItem
+    })
   };
 
   const txtItemTitle_Changed = function (e) {

@@ -5,7 +5,8 @@ import AppContext from '../todoAppContext';
 
 export default function TodoList(props) {
   
-  const { items: list, query } = useContext(AppContext);
+  const { store } = useContext(AppContext);
+  const { items: list, query } = store;
 
   return (
     <div>

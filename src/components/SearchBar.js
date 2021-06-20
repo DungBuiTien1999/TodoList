@@ -1,14 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../todoAppContext';
+import TYPE from '../helper/actionType';
 
 export default function SearchBar({ initQuery }) {
   const [term, setTerm] = useState(initQuery);
 
-  const { setQuery } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   useEffect(() => {
-    setQuery(term);
-  }, [term, setQuery]);
+    dispatch({
+      type: TYPE.UPDATE_QUERY,
+      payload: {
+        query: term
+      }
+    })
+  }, [term, dispatch]);
 
   const txtTerm_Changed = function (e) {
     setTerm(e.target.value);
