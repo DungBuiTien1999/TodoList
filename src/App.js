@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 import TodoList from './components/TodoList';
 import AddTask from './components/AddTask';
 import SearchBar from './components/SearchBar';
+import AppContext from './todoAppContext';
 
 function App() {
-
   const [query, setQuery] = useState('');
   const [items, setItems] = useState([]);
 
@@ -22,24 +22,13 @@ function App() {
     }, 300);
   }, []);
 
-  const onTaskItemAddedHandler = function (newItem) {
-    setItems([...items, newItem]);
-  }
-
-  const onQueryChangedHandler = function (queryValue) {
-    setQuery(queryValue);
-  }
-
-  const onItemDeletedHandler = function (itemId) {
-    const newItems = items.map(item => item.id === itemId ? { ...item, complete: true } : item);
-    setItems(newItems);
-  }
-
   return (
     <div className="container">
-      <SearchBar initQuery="" onQueryChanged={onQueryChangedHandler} />
-      <TodoList list={items} query={query} onItemDeleted={onItemDeletedHandler} />
-      <AddTask initValue="New Item Title" onTaskItemAdded={onTaskItemAddedHandler} />
+      <AppContext.Provider value={{ items, setItems, query, setQuery }}>
+        <SearchBar initQuery="" />
+        <TodoList />
+        <AddTask initValue="New Item Title" />
+      </AppContext.Provider>
     </div>
   );
 }

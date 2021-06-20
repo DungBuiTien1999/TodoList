@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import AppContext from '../todoAppContext';
 
-export default function TodoItem({ item, onItemDeleted }) {
+export default function TodoItem({ item }) {
+
+  const { items, setItems } = useContext(AppContext);
+
   const btnDel_Clicked = function () {
-    // alert(item.id);
-    onItemDeleted(item.id);
-  }
+    const newItems = items.map(task => task.id === item.id ? { ...task, complete: true } : task);
+    setItems(newItems);
+  };
 
   return (
     <li className={item.complete ? 'done' : ''}>
       {item.title}
       {!item.complete && <button onClick={btnDel_Clicked}>Delete</button>}
     </li>
-  )
+  );
 }
