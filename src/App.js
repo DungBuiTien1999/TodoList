@@ -6,7 +6,8 @@ import SearchBar from './components/SearchBar';
 import AppContext from './todoAppContext';
 import reducer from './todoAppReducer';
 import TYPE from './helper/actionType';
-import data from './helper/data';
+// import data from './helper/data';
+import { axiosInstance } from './utils';
 
 function App() {
   const initialState = {
@@ -17,15 +18,29 @@ function App() {
   const [store, dispatch] = useReducer(reducer, initialState);
 
   useEffect(function () {
-    setTimeout(function () {
-      const items_from_backend = data;
-      dispatch({
+
+    async function loadTasks() {
+      const userId = 1;
+      const res = await axiosInstance.get(`/tasks/${userId}`);
+        dispatch({
         type: TYPE.INIT,
         payload: {
-          items: items_from_backend,
+          items: res.data,
         },
       });
-    }, 300);
+    }
+
+    loadTasks();
+
+    // setTimeout(function () {
+    //   const items_from_backend = data;
+    //   dispatch({
+    //     type: TYPE.INIT,
+    //     payload: {
+    //       items: items_from_backend,
+    //     },
+    //   });
+    // }, 300);
   }, []);
 
   return (
