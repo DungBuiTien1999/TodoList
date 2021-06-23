@@ -42,7 +42,6 @@ export default function AddTask({ initValue }) {
   return (
     <div>
       <h3>Add Item</h3>
-      {/* <p>{itemTitle}</p> */}
       <div className="fg">
         <input
           type="text"

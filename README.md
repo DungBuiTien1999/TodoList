@@ -1,3 +1,8 @@
+### Strarting backend before
+### `cd todoapp-backend`
+### `npm start`
+## run database script (mysql) before starting backend (in todoapp-backend folder)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

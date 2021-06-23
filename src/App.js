@@ -1,56 +1,42 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-import TodoList from './components/TodoList';
-import AddTask from './components/AddTask';
-import SearchBar from './components/SearchBar';
-import AppContext from './todoAppContext';
-import reducer from './todoAppReducer';
-import TYPE from './helper/actionType';
-// import data from './helper/data';
-import { axiosInstance } from './utils';
+import Todo from './views/Todo';
+import Login from './views/Login';
 
 function App() {
-  const initialState = {
-    query: '',
-    items: [],
-  };
-
-  const [store, dispatch] = useReducer(reducer, initialState);
-
-  useEffect(function () {
-
-    async function loadTasks() {
-      const userId = 1;
-      const res = await axiosInstance.get(`/tasks/${userId}`);
-        dispatch({
-        type: TYPE.INIT,
-        payload: {
-          items: res.data,
-        },
-      });
-    }
-
-    loadTasks();
-
-    // setTimeout(function () {
-    //   const items_from_backend = data;
-    //   dispatch({
-    //     type: TYPE.INIT,
-    //     payload: {
-    //       items: items_from_backend,
-    //     },
-    //   });
-    // }, 300);
-  }, []);
-
   return (
-    <div className="container">
-      <AppContext.Provider value={{ store, dispatch }}>
-        <SearchBar initQuery="" />
-        <TodoList />
-        <AddTask initValue="New Item Title" />
-      </AppContext.Provider>
-    </div>
+    <Router>
+      <Switch>
+      <Route exact path="/login">
+          <Login />
+        </Route>
+        {/* <Route exact path="/" render={() => <Todo />} /> */}
+        <PrivateRoute path="/">
+          <Todo />
+        </PrivateRoute>
+      </Switch>
+    </Router>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        localStorage.todoApp_accessToken ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              // state: { from: location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 
